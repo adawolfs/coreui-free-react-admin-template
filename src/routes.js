@@ -182,12 +182,17 @@ const User = Loadable({
   loading: Loading,
 });
 
+const TimeTracker = Loadable({
+  loader: () => import('./TimeTracker'),
+  loading: Loading,
+});
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/time', name: 'TimeTracker', component: TimeTracker },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
