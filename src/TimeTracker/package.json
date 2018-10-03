@@ -1,0 +1,6 @@
+{
+  "name": "TimeTracker",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./TimeTracker.jsx"
+}
