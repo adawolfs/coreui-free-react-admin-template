@@ -21,10 +21,29 @@ import routes from '../../routes';
 import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
 import DefaultHeader from './DefaultHeader';
+// History of routes
+import { history } from '../../_helpers';
+
+import Loadable from 'react-loadable'
+import { PrivateRoute } from '../../_components';
+
+function Loading() {
+  return <div>Loading...</div>;
+}
+
+const TimeTracker = Loadable({
+  loader: () => import('../../TimeTracker'),
+  loading: Loading,
+});
 
 class DefaultLayout extends Component {
   render() {
-    return (
+    if ( !localStorage.getItem('user')){
+      console.log("redirect to login")
+      return <Redirect to="/login" />      
+    }
+    else
+      return (
       <div className="app">
         <AppHeader fixed>
           <DefaultHeader />
@@ -38,19 +57,22 @@ class DefaultLayout extends Component {
             <AppSidebarMinimizer />
           </AppSidebar>
           <main className="main">
+            
             <AppBreadcrumb appRoutes={routes}/>
             <Container fluid>
-              <Switch>
+              <Switch history={history}>
+                <Route path='/theme/colors' component={TimeTracker}/> 
                 {routes.map((route, idx) => {
-                    return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
+                    return route.component ? (
+                      <Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
                         <route.component {...props} />
                       )} />)
                       : (null);
                   },
                 )}
-                <Redirect from="/" to="/dashboard" />
               </Switch>
             </Container>
+            
           </main>
           <AppAside fixed hidden>
             <DefaultAside />
