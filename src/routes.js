@@ -183,7 +183,7 @@ const User = Loadable({
 });
 
 const TimeTracker = Loadable({
-  loader: () => import('./TimeTracker'),
+  loader: () => import('./LoginPage'),
   loading: Loading,
 });
 

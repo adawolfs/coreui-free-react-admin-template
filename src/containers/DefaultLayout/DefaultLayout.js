@@ -27,14 +27,12 @@ import { history } from '../../_helpers';
 import Loadable from 'react-loadable'
 import { PrivateRoute } from '../../_components';
 
+import { TimeTracker } from '../../TimeTracker';
+
 function Loading() {
   return <div>Loading...</div>;
 }
 
-const TimeTracker = Loadable({
-  loader: () => import('../../TimeTracker'),
-  loading: Loading,
-});
 
 class DefaultLayout extends Component {
   render() {
@@ -61,7 +59,7 @@ class DefaultLayout extends Component {
             <AppBreadcrumb appRoutes={routes}/>
             <Container fluid>
               <Switch history={history}>
-                <Route path='/theme/colors' component={TimeTracker}/> 
+                <Route exact path="/track" component={ TimeTracker } />
                 {routes.map((route, idx) => {
                     return route.component ? (
                       <Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
@@ -70,6 +68,7 @@ class DefaultLayout extends Component {
                       : (null);
                   },
                 )}
+                <Redirect from="/" to="/track" />
               </Switch>
             </Container>
             
