@@ -1,8 +1,10 @@
 import {config} from './config' ;
+import { getToken } from '../_helpers';
 
 export const userService = {
     login,
-    logout
+    logout,
+    verifySession,
 };
 
 function login(username, password) {
@@ -20,6 +22,27 @@ function login(username, password) {
         //mode: 'no-cors'
     };
     return fetch(config.apiUrl +  '/api-token-auth/', requestOptions)
+        .then(handleResponse)
+        .then(user => {
+            console.log(user)
+            // login successful if there's a jwt token in the response
+            if (user.token) {
+                // store user details and jwt token in local storage to keep user logged in between page refreshes
+                localStorage.setItem('user', JSON.stringify(user));
+            }
+
+            return user;
+        });
+}
+
+function verifySession() {
+    let data = new FormData();
+    data.append('token', getToken());;
+    const requestOptions = {
+        method: 'POST',
+        body: data,
+    };
+    return fetch(config.apiUrl +  '/api-token-verify/', requestOptions)
         .then(handleResponse)
         .then(user => {
             console.log(user)

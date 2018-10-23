@@ -19,6 +19,15 @@ export function authentication(state = initialState, action) {
       return {};
     case userConstants.LOGOUT:
       return {};
+    case userConstants.VERIFY_SESSION_SUCCESS:
+      return {
+        loggedIn: true,
+        user: action.user
+      }
+    case userConstants.VERIFY_SESSION_FAILURE:
+      console.log("VERIFY_SESSION_FAILURE")
+      return {
+      }
     default:
       return state
   }
