@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
+import { connect } from 'react-redux';
 
 import {
   AppAside,
@@ -29,15 +30,28 @@ import { PrivateRoute } from '../../_components';
 
 import { TimeTracker } from '../../TimeTracker';
 
+import { userActions } from '../../_actions';
+
 function Loading() {
   return <div>Loading...</div>;
 }
 
 
 class DefaultLayout extends Component {
+  
+  constructor(props) {
+    super(props);
+
+      const { dispatch } = this.props;
+      history.listen((location, action) => {
+        dispatch(userActions.verifySession())
+      });
+  }
+  
   render() {
-    if ( !localStorage.getItem('user')){
-      console.log("redirect to login")
+    const { loggedIn } = this.props;
+    if (!loggedIn){
+      console.log("dEFAULT ALYUOUT")
       return <Redirect to="/login" />      
     }
     else
@@ -85,4 +99,13 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+function mapStateToProps(state) {
+  const { loggedIn } = state.authentication;
+  return {
+    loggedIn
+  };
+}
+
+const connectedDefaultLayout = connect(mapStateToProps)(DefaultLayout);
+
+export default connectedDefaultLayout;
